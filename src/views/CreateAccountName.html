@@ -1,0 +1,119 @@
+  <div>
+    <NavbarPage></NavbarPage>
+    <CheckStep v-bind:step="1"></CheckStep>
+    <main>
+      <Container>
+        <br>
+        <Row>
+          <Column md="6">
+            <Card>
+              <CardBody>
+                <form>
+                  <h2>Choose Account Name</h2>
+                  <hr>
+                  EOS Account names must be lower case and should be only 12 characters .[Only contains the following symbol 1,2,3,4,5 or a-z ]): 
+                  <br>
+                  <br>
+                  Account Name:
+                  <input
+                    v-model="accountNamePage"
+                    pattern="^[1-5a-z]{0,12}"
+                    maxlength="12"
+                    v-on:input="accountNamePage=opt(accountNamePage, $event)"
+                    v-bind:class="{checkValid:this.accountNameExistFlag=='1', checkInValid:this.accountNameExistFlag=='2'}"
+                    v-on:blur="checkAccountName"
+                    class="form-control"
+                    :placeholder="lblActNamePhr"
+                    required
+                  >
+                  <p class="errorMsg" v-if="accountNameExistMsg">Invalid account name!</p>
+                  <p class="errorMsg" v-if="accountNameErrorMsg">The account name entered has already been registered!</p>
+                  <div
+                    v-if="this.accountNameExistFlag=='1'"
+                    class="successMsg">
+                    Account Name is good!</div>
+                  <br>
+                  Email Address:
+                  <br>
+                  <input
+                    v-model="emailPage"
+                    v-bind:class="{checkValid:this.mailVerifyFlag=='1', checkInValid:this.emailErrorMsg}"
+                    v-on:blur="checkEmail"
+                    class="form-control"
+                    :placeholder="lblEmailAdrPhr"
+                  >
+                  <p class="errorMsg" v-if="emailErrorMsg">Invalid email address!</p>
+                  <div
+                    v-if="this.mailVerifyFlag=='1'"
+                    class="successMsg"
+                  >Verified email address!</div>
+                  <div v-show="this.mailVerifyFlag=='2'">
+                    <br>
+                    <span>
+                      Verification Code: 
+                      <input
+                        v-model="verificationCode"
+                        maxlength="6"
+                        size="8"
+                      >
+                      &nbsp;
+                      <a
+                        class="btn btn-primary"
+                        style="text-transform: none;padding-right: 10px;padding-top: 6px;padding-bottom: 6px;padding-left: 10px;"
+                        :class="{disabled: !this.canClick}"
+                        @click="checkEmailVerify"
+                      >{{content}}</a>
+                    </span>
+                    <p
+                      class="errorMsg"
+                      v-if="verificationCodeErrorMsg && verificationCode.length <= 0"
+                    >Please enter the verification code received via the email address specified above.</p>
+                    <p
+                      class="errorMsg"
+                      v-if="verificationCodeErrorMsg && verificationCode.length > 0"
+                    >{{verificationCodeErrorMsg}}</p>
+                  </div>
+                  <div class="text-right py-4 mt-3">
+                    <router-link
+                      class="btn btn-smart1"
+                      v-bind:class="{disabled:this.isNextButtonDisabled}"
+                      @click.native="trunToCreatePublickey"
+                      to>Next</router-link>
+                  </div>
+                </form>
+              </CardBody>
+            </Card>
+          </Column>
+          <Column md="6">
+            <h4>
+              The Lastest Fee Of
+              <font color="5385c1">{{productName}}</font>
+            </h4>
+            <ul>
+              <li>
+                <h5>
+                  Timestamp: 
+                  <font color="5385c1">{{new Date(salePriceTime).toLocaleString()}}</font>
+                </h5>
+              </li>
+              <li>
+                <h5>
+                  Pay with Stripe: 
+                  <font color="5385c1">{{stripeSalePrice | currency}}</font>
+                </h5>
+              </li>
+              <li>
+                <h5>
+                  Pay with Coinbase: 
+                  <font color="5385c1">{{coinbaseSalePrice | currency}}</font>
+                </h5>
+              </li>
+            </ul>
+            <hr>
+          </Column>
+        </Row>
+      </Container>
+    </main>
+    <br>
+    <MyFooter></MyFooter>
+  </div>

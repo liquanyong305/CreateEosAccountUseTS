@@ -1,0 +1,35 @@
+.btn-smart1 {
+  width:140px;
+  background-color: #5385c1 !important;
+  color: #fff !important;
+}
+  .btn-smart1:hover {
+    background-color: #4075b7 !important;
+  }
+  .errorMsg {
+    color: red;
+  }
+  .successMsg {
+    color: #00c851;
+  }
+  router-link.disabled {
+    pointer-events: none;
+  }
+  .checkValid {
+    border-color: #00c851 !important;
+  }
+  .checkValid:focus {
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.18), 0 4px 5px 0 rgba(0, 0, 0, 0.15);
+  }
+  .checkInValid {
+    border-color: #f44336 !important;
+  }
+  .checkInValid:focus {
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.18), 0 4px 5px 0 rgba(0, 0, 0, 0.15);
+  }
+  .disabled {
+    background-color: #ddd;
+    border-color: #ddd;
+    color: #57a3f3;
+    cursor: not-allowed;
+  }

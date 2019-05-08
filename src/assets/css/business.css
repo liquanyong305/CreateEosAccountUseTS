@@ -1,0 +1,363 @@
+@charset "UTF-8";
+ul,
+li {
+  list-style: none; }
+.nested-dl {
+  border-bottom: 1px solid #ddd;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+  line-height: 1.6em;
+  padding-bottom: 5px;
+  padding-right: 5px;
+  padding-top: 5px; }
+
+.nested-dl-dt {
+  font-weight: bold;
+  line-height: 1.6em;
+  padding-right: 16px;
+  width: 360px; }
+  .nested-dl-dt > a {
+    font-weight: normal; }
+
+.nested-dl-dd {
+  line-height: 1.6em;
+  width: 300px; }
+
+.nested-dl-nested {
+  border-bottom: 0;
+  padding-bottom: 0;
+  padding-right: 0;
+  padding-top: 0; }
+  .nested-dl-nested > .nested-dl-dt {
+    color: #888;
+    font-weight: normal;
+    padding-right: 16px;
+    width: 200px; }
+  .nested-dl-nested > .nested-dl-dd {
+    padding-right: 0; }
+
+.nested-dl-plain > .nested-dl-dt {
+  color: #222; }
+
+.nested-dl-no-borders {
+  border-bottom: 0; }
+
+.nested-dl-repeats {
+  border-bottom: 0;
+  position: relative; }
+  .nested-dl-repeats::after {
+    border-top: 1px solid #ddd;
+    bottom: 0;
+    content: '';
+    display: block;
+    left: 190px;
+    position: absolute;
+    right: 0; }
+  .nested-dl-repeats:last-of-type::after {
+    left: 0; }
+  .nested-dl-no-borders .nested-dl-repeats:last-of-type::after {
+    content: none; }
+
+.list-card-li:last-child .nested-dl-repeats::after {
+  content: none; }
+
+.nested-dl-alignment > .nested-dl-dd .nested-dl-dt {
+  color: #222;
+  width: 344px; }
+
+.nested-dl-alignment > .nested-dl-dd .nested-dl-dd {
+  width: calc(100% - 344px); }
+
+.nested-dl-dt-brand-interest {
+  font-weight: bold;
+  line-height: 1.6em;
+  padding-right: 16px; }
+  .nested-dl-dt-brand-interest > a {
+    font-weight: normal; }
+
+.nested-dl-dd {
+  line-height: 1.6em; }
+
+  .list-card-li {
+    border-bottom: 1px solid #ddd; }
+    .list-card-li:last-child {
+      border-bottom: 0; }
+
+
+.section-box {
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 16px; }
+    .section-box:only-child {
+      border-bottom: 0;
+      margin-bottom: 0; }
+
+  .section-box-title {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    min-height: 48px;
+    padding: 0 8px 0 24px; }
+    .section-box-title > .link-black {
+      -ms-flex-negative: 0;
+          flex-shrink: 0; }
+    .section-box-title a:hover {
+      text-decoration: none; }
+    .section-box-title h2 {
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-negative: 0;
+          flex-shrink: 0;
+      font-size: 2.4rem;
+      line-height: 1;
+      margin-right: 4px;
+      padding: 16px 0; }
+      .section-box-title h2 span {
+        color: #888;
+        font-size: 1.4rem;
+        font-weight: normal;
+        margin-left: 8px; }
+        .section-box-title h2 span.count {
+          background-color: transparent; }
+        .section-box-title h2 span em {
+          color: #222;
+          margin-left: 8px; }
+
+  .section-box-title-sub-box {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 100%;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+
+  .section-box-inner {
+    display: inline-block;
+    padding: 0 0 0 24px;
+    vertical-align: bottom;
+    width: 100%; }
+    .section-box-inner.has-border-top {
+      border-top: 1px solid #ddd; }
+    .section-box-inner .detail {
+      position: relative; }
+    .section-box-inner .see-more-block {
+      max-height: inherit;
+      overflow: visible; }
+    .section-box-inner .see-more-hidden {
+      max-height: 66px;
+      overflow: hidden; }
+    .section-box-inner .see-more {
+      background-color: #fff;
+      bottom: 0;
+      padding-right: 7px;
+      position: absolute;
+      right: 0; }
+      .section-box-inner .see-more:hover {
+        opacity: 1; }
+
+  .section-box-footer {
+    color: #888;
+    font-size: 1.4rem;
+    font-weight: normal;
+    background-color: #f9f9f9;
+    line-height: 2;
+    padding: 8px 24px;
+    text-align: left; }
+    .section-box-footer span {
+      margin-right: 16px; }
+      .section-box-footer span + a {
+        margin-right: 16px; }
+    .section-box-footer a {
+      margin-left: 0; }
+    .section-box-footer .list-small li {
+      line-height: 1.8; }
+
+  .section-box-footer-white {
+    color: #0a56c4;
+    font-size: 1.4rem;
+    font-weight: normal;
+    background-color: #fff;
+    padding-top: 0; }
+
+  .section-box-title-alt {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap; }
+
+
+    .management-review-content .section-box-title {
+        -webkit-box-pack: start;
+            -ms-flex-pack: start;
+                justify-content: start; }
+        .management-review-content .section-box-title dt {
+            margin-right: 8px; }
+        .management-review-content .section-box-title dd {
+            font-size: 1.7rem;
+            font-weight: bold; }
+
+    .list.list-define02 dt,
+    .list.list-define02 dd,
+    .list.list-define02 p,
+    .list.list-define02 span {
+        line-height: 1;
+        text-align: left; }
+    .list.list-define02 dl {
+        padding: 8px 0; }
+    .list.list-define02 dt {
+        color: #888;
+        font-size: 1.4rem;
+        font-weight: normal;
+        width: 24%; }
+        .list.list-define02 dt span {
+        display: block;
+        margin-right: 16px; }
+    .list.list-define02 dd {
+        padding-left: 8px;
+        width: 76%; }
+        .list.list-define02 dd .bold {
+        font-size: 1.9rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        line-height: 20px;
+        width: 100%; }
+        .list.list-define02 dd .bold::after {
+            content: ''; }
+        .list.list-define02 dd > p {
+        color: #222;
+        font-size: 1.4rem;
+        font-weight: normal; }
+        .list.list-define02 dd > p + span,
+        .list.list-define02 dd > p + ul {
+            margin-top: 8px; }
+        .list.list-define02 dd > p + p {
+            margin-top: 8px; }
+        .list.list-define02 dd .sub-name {
+        color: #888;
+        font-size: 1.1rem;
+        font-weight: normal;
+        line-height: 1.4;
+        display: block; }
+        .list.list-define02 dd .respond-box {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin-bottom: 16px; }
+        .list.list-define02 dd .respond-box:only-child, .list.list-define02 dd .respond-box:last-child {
+            margin-bottom: 0; }
+        .list.list-define02 dd .respond-box::before {
+            content: '';
+            display: inline-block;
+            height: 16px;
+            margin-right: 4px;
+            width: 16px; }
+        .list.list-define02 dd .respond-box.respond-positive {
+            margin-bottom: 4px; }
+
+    .list-define-box {
+    padding: 8px 0; }
+    .list-define-box dl {
+        border-bottom: 1px solid #ddd; }
+        .list-define-box dl:last-child {
+        border-bottom: 0; }
+    .list-define-box dt {
+        width: 144px; }
+    .list-define-box dd {
+        clear: both; }
+    .list-define-box.list-define01 dl {
+        padding: 8px 0; }
+        .list-define-box.list-define01 dl:only-child, .list-define-box.list-define01 dl:last-child {
+        border-bottom: 0; }
+    .list-define-box.list-define01 dt {
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-right: 16px; }
+    .list-define-box.list-define01 dd {
+        padding-right: 16px; }
+    .list-define-box.list-define01.list-define-title-light dl {
+        padding: 8px 0; }
+        .list-define-box.list-define01.list-define-title-light dl dt {
+        color: #888;
+        font-size: 1.4rem;
+        font-weight: normal; }
+    .list-define-box.list-define02 dt,
+    .list-define-box.list-define02 dd,
+    .list-define-box.list-define02 p,
+    .list-define-box.list-define02 span {
+        line-height: 1;
+        text-align: left; }
+    .list-define-box.list-define02 dl {
+        padding: 8px 0; }
+    .list-define-box.list-define02 dt {
+        color: #888;
+        font-size: 1.4rem;
+        font-weight: normal;
+        width: 27%; }
+        .list-define-box.list-define02 dt span {
+        display: block;
+        margin-right: 16px; }
+    .list-define-box.list-define02 dd {
+        padding-left: 8px;
+        padding-right: 8px;
+        width: 74%; }
+        .list-define-box.list-define02 dd .bold {
+        font-size: 1.9rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        line-height: 20px;
+        width: 100%; }
+        .list-define-box.list-define02 dd .bold::after {
+            content: ''; }
+        .list-define-box.list-define02 dd > p {
+        color: #222;
+        font-size: 1.4rem;
+        font-weight: normal; }
+        .list-define-box.list-define02 dd > p + span,
+        .list-define-box.list-define02 dd > p + ul {
+            margin-top: 8px; }
+        .list-define-box.list-define02 dd > p + p {
+            margin-top: 8px; }
+        .list-define-box.list-define02 dd .sub-name {
+        color: #888;
+        font-size: 1.1rem;
+        font-weight: normal;
+        line-height: 1.4;
+        display: block; }
+        .list-define-box.list-define02 dd .respond-box {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin-bottom: 16px; }
+        .list-define-box.list-define02 dd .respond-box:only-child, .list-define-box.list-define02 dd .respond-box:last-child {
+            margin-bottom: 0; }
+        .list-define-box.list-define02 dd .respond-box::before {
+            content: '';
+            display: inline-block;
+            height: 16px;
+            margin-right: 4px;
+            width: 16px; }
+        .list-define-box.list-define02 dd .respond-box.respond-positive {
+            margin-bottom: 4px; }
+    .list-define-box.list-define-title-short dt {
+        min-width: 104px;
+        width: 104px; }
