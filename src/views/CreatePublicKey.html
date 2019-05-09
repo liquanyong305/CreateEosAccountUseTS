@@ -1,0 +1,86 @@
+<div>
+<my-header></my-header>
+<check-step v-bind:step="2"></check-step>
+<main>
+    <container>
+    <br>
+    <row>
+        <column md="6">
+        <card>
+            <card-body>
+            <h2>Provide Public Key</h2>
+            <hr>Please provide the public keys for your new account.Active Public Key can be the same as Owner Public key.
+            <br>
+            <br>Owner Public key:
+            <input
+                v-model="ownerPublicKeyPage"
+                class="form-control"
+                v-bind:class="{checkInValid:this.ownerPublicKeyErrorMsg}"
+                v-on:change="checkOwnerPublicKey"
+            >
+            <p class="errorMsg" v-if="ownerPublicKeyErrorMsg">53 characters ownerPublicKey required!</p>
+            <br>Active Public key:
+            <input
+                v-model="activePublicKeyPage"
+                class="form-control"
+                v-bind:class="{checkInValid:this.activePublicKeyErrorMsg}"
+                v-on:change="checkActivePublicKey"
+            >
+            <p class="errorMsg" v-if="activePublicKeyErrorMsg">53 characters activePublicKey required!</p>
+            <br>
+            <div class="text-right py-4 mt-3">
+                <router-link
+                class="btn btn-smart1 btn-rounded float-left"
+                style="width:140px"
+                to="/ear/can"
+                >PREVIOUS</router-link>
+                <router-link
+                class="btn btn-smart1 btn-rounded float-right"
+                v-bind:class="{disabled:this.isNextButtonDisabled}"
+                style="width:140px"
+                @click.native="trunToPayment"
+                to
+                >NEXT</router-link>
+            </div>
+            </card-body>
+        </card>
+        </column>
+        <column md="6">
+        <ul>
+            <li>
+            <h5>
+                Your chosen EOS Account Name is:
+                <font color="5385c1">{{accountName}}</font>
+            </h5>
+            </li>
+            <li>
+            <h5>
+                Your Email Address is:
+                <font color="5385c1">{{email}}</font>
+            </h5>
+            </li>
+        </ul>
+        <hr>
+        <p>In order to access your new EOS account ,you will need two key pairs,owner and active.</p>
+        <ul>
+            <li>
+            <a class="btn btn-unique btn-rounded" @click="sendKeyToEmail">Send KeyPairs to Mail</a>
+            (Send KeyPairs To Mail)
+            <br>
+            <p class="sucessMsg" v-if="sendKeyToEmaiMessage">sendKeyToEmaiMessage error!</p>
+            </li>
+            <li>
+            <a
+                target="_blank"
+                href="https://ipfs.io/ipfs/QmW4XxaEg8cWsYisfjnjqLFi1MbHMYjt7nbCh8ZHwgg9c2"
+            >Simple javascript generator</a>
+            (easiest to use)
+            </li>
+        </ul>
+        </column>
+    </row>
+    </container>
+</main>
+<br>
+<my-footer></my-footer>
+</div>

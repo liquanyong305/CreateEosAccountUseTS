@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
 import CreateAccountName from '@/views/CreateAccountName';
+import CreatePublicKey from '@/views/CreatePublicKey';
+import Payment from '@/views/Payment';
+import Finish from '@/views/Finish';
 
 Vue.use(Router);
 

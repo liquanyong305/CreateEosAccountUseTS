@@ -1,0 +1,86 @@
+<template>
+  <div>
+    <my-header></my-header>
+    <check-step v-bind:step="3"></check-step>
+    <main>
+      <container>
+        <br>
+        <row>
+          <column md="6">
+            <cards>
+              <card-body>
+                <h2>Make Payment</h2>
+                <hr>After successful payment we will create the EOS account for you.
+                <br>
+                <br>choose payment option:
+                <br>
+                <select v-model="selected" @change="payTypeChange">
+                  <option disabled value>--Please select one--</option>
+                  <option value="1">CreditCard(Stripe) {{this.creditCurrency | currency}}</option>
+                  <option
+                    value="2"
+                  >CryptoCurrency(Bitcoin, Ethereum) {{this.cryptoCurrency | currency}}</option>
+                </select>
+                <br>
+                <br>
+                <div align="center" v-if="this.count">
+                  <h2>
+                    <font color="#d1434a">
+                      <b>total {{count | currency}}</b>
+                    </font>
+                  </h2>
+                </div>
+                <div v-if="this.selected=='1' && this.count" align="center">
+                  <button
+                    v-on:click="pay"
+                    class="pay-with-stripe"
+                    :disabled="this.status"
+                  >PAY WITH CREDIT CARD</button>
+                </div>
+                <div v-if="this.selected=='2' && this.count" align="center">
+                  <button
+                    v-on:click="pay"
+                    class="pay-with-crypto"
+                    :disabled="this.status"
+                  >PAY WITH COINBASE</button>
+                </div>
+                <div id="card-errors" role="alert" v-text="errorMessage"></div>
+                <div class="text-right py-4 mt-3">
+                  <router-link
+                    class="btn btn-smart1 btn-rounded float-left"
+                    style="width:140px"
+                    to="/ear/cpk"
+                  >PREVIOUS</router-link>
+                </div>
+              </card-body>
+            </cards>
+          </column>
+          <column md="6">
+            <ul>
+              <li>
+                <h5>Your chosen EOS Account Name is:
+                  <font color="5385c1">{{accountName}}</font>
+                </h5>
+              </li>
+              <li>
+                <h5>Your Email Address is:
+                  <font color="5385c1">{{email}}</font>
+                </h5>
+              </li>
+              <li>
+                <h5>Owner Public Key:</h5>
+              </li>
+              <input v-bind:value="ownerPublicKey" class="form-control" disabled="true">
+              <li>
+                <h5>Active Public Key:</h5>
+              </li>
+              <input v-bind:value="activePublicKey" class="form-control" disabled="true">
+            </ul>
+          </column>
+        </row>
+      </container>
+    </main>
+    <br>
+    <my-footer></my-footer>
+  </div>
+</template>

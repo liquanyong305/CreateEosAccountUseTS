@@ -1,0 +1,153 @@
+<template>
+  <div>
+    <my-header></my-header>
+    <check-step v-bind:step="4"></check-step>
+    <main>
+      <container>
+        <br>
+        <jumbotron class="mt-4">
+          <div v-if="this.orderStatus=='100'">
+            <app-success @restartCart="success = true"/>
+            <h2>Congratulations!</h2>
+          </div>
+          <div v-if="this.orderStatus!='100'">
+            <h2>
+              <p style="text-align:left;float: left;">Wait for payment</p>
+            </h2>
+            <p style="text-align:right;">
+              <button
+                class="btn btn-smart1"
+                style="width:300px"
+                @click="getOrderStatus"
+                to
+              >REFRESH ORDER STATUS</button>
+            </p>
+          </div>
+          <hr>
+          <ul>
+            <li>
+              <h5>
+                Your chosen EOS Account Name is:
+                <font color="5385c1">{{accountName}}</font>
+              </h5>
+            </li>
+            <li>
+              <h5>
+                Your Email Address is:
+                <font color="5385c1">{{email}}</font>
+              </h5>
+            </li>
+            <li>
+              <h5>Owner Public Key:</h5>
+            </li>
+            <input v-bind:value="ownerPublicKey" class="form-control" disabled="true">
+            <li>
+              <h5>Active Public Key:</h5>
+            </li>
+            <input v-bind:value="activePublicKey" class="form-control" disabled="true">
+          </ul>
+          <hr>
+          <div class="text-center py-2 mt-3">
+            <button class="btn btn-outline-purple" @click="getAccount">
+              Account Infomations From EOS BlockChain
+              <i class="fa fa-paper-plane-o ml-2"></i>
+            </button>
+          </div>
+          <br>
+          <div v-if="this.jsonInfo != ''">
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col" colspan="2">Resources</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>EOS</td>
+                    <td>{{coreLiquidBalance}}</td>
+                  </tr>
+                  <tr>
+                    <td>RAM</td>
+                    <td>
+                      {{ramUsage}} bytes used
+                      <br>
+                      {{ramQuota}} bytes owned
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>CPU</td>
+                    <td>
+                      <span>
+                        {{cpuWeight}}
+                        <br>
+                        ({{cpuLimitUsed/cpuLimitMax*100}} % used)
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>NET</td>
+                    <td>
+                      <span>
+                        {{netWeight}}
+                        <br>
+                        ({{netLimitUsed/netLimitMax*100}} % used)
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br>
+            <a @click="jsonClick">
+              <font color="5385c1">{{lblJSonInfo}}</font>
+            </a>
+            <div v-if="this.showJSon" class="scrollable">
+              <pre>{{jsonInfo}}</pre>
+            </div>
+          </div>
+            </jumbotron>
+            <jumbotron class="mt-4" v-if="this.jsonInfo == ''">
+                <div class="list-card-body">
+                    <ul class="list-card-items">
+                        <li class="list-card-li">
+                        <!-- nested-dl -->
+                        <dl class="nested-dl ">
+                            <dd class="nested-dl-dd">
+                            <!-- nested-dl -->
+                            <dl class="nested-dl  nested-dl-nested">
+                                <dt class="nested-dl-dt">EOS</dt>
+                                <dd class="nested-dl-dd">{{coreLiquidBalance}}</dd>
+                            </dl>
+                            <!-- /nested-dl -->
+                            <!-- nested-dl -->
+                            <dl class="nested-dl  nested-dl-nested">
+                                <dt class="nested-dl-dt">RAM</dt>
+                                <dd class="nested-dl-dd">{{ramUsage}} bytes used<br>{{ramQuota}} bytes owned</dd>
+                            </dl>
+                            <!-- /nested-dl -->
+                            <!-- nested-dl -->
+                            <dl class="nested-dl  nested-dl-nested">
+                                <dt class="nested-dl-dt">CPU</dt>
+                                <dd class="nested-dl-dd">{{cpuWeight}}<br>({{cpuLimitUsed/cpuLimitMax*100}} % used)</dd>
+                            </dl>
+                            <!-- /nested-dl -->
+                            <!-- nested-dl -->
+                            <dl class="nested-dl  nested-dl-nested">
+                                <dt class="nested-dl-dt">NET</dt>
+                                <dd class="nested-dl-dd">{{netWeight}}<br>({{netLimitUsed/netLimitMax*100}} % used)</dd>
+                            </dl>
+                            <!-- /nested-dl -->
+                            </dd>
+                        </dl>
+                        <!-- /nested-dl -->
+                        </li>
+                    </ul>
+                </div>
+            </jumbotron>
+      </container>
+    </main>
+    <br>
+    <my-footer></my-footer>
+  </div>
+</template>

@@ -57,8 +57,8 @@ export default class CreateAccountName extends Vue {
     public accountNameExistFlag: string = this.orderEntity === undefined? '': this.orderEntity.accountNameExistFlg;
     public productName: string = this.productEntity === undefined? '': this.productEntity.productName;
     public salePriceTime: string = this.productEntity === undefined? '': this.productEntity.salePriceTime;
-    public stripeSalePrice: string = this.productEntity === undefined? '': this.productEntity.stripeSalePrice;
-    public coinbaseSalePrice: string = this.productEntity === undefined? '': this.productEntity.coinbaseSalePrice;
+    public stripeSalePrice: number = this.productEntity === undefined? 0: this.productEntity.stripeSalePrice;
+    public coinbaseSalePrice: number = this.productEntity === undefined? 0: this.productEntity.coinbaseSalePrice;
     public verificationCode: string = '';
     public accountNameErrorMsg: string = '';
     public emailErrorMsg: string = '';
@@ -87,7 +87,7 @@ export default class CreateAccountName extends Vue {
         } else {
           return '';
         }
-      }
+    }
     get isNextButtonDisabled() {
         if (
             !this.accountNameErrorMsg &&
@@ -204,8 +204,8 @@ export default class CreateAccountName extends Vue {
             this.contentPattern = '2';
             this.checkEmail();
           }
-        }, 1000);
-      }
+      }, 1000);
+    }
 
     // Next to CreatePublicKey
     public trunToCreatePublickey() {
