@@ -1,13 +1,13 @@
-<template>
+
   <div>
-    <my-header></my-header>
+    <NavbarPage></NavbarPage>
     <check-step v-bind:step="3"></check-step>
     <main>
       <container>
         <br>
         <row>
           <column md="6">
-            <cards>
+            <card>
               <card-body>
                 <h2>Make Payment</h2>
                 <hr>After successful payment we will create the EOS account for you.
@@ -53,7 +53,7 @@
                   >PREVIOUS</router-link>
                 </div>
               </card-body>
-            </cards>
+            </card>
           </column>
           <column md="6">
             <ul>
@@ -83,4 +83,3 @@
     <br>
     <my-footer></my-footer>
   </div>
-</template>

@@ -1,4 +1,4 @@
-import WithRender from './CreateAccountName.html';
+import WithRender from './Payment.html';
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {State, Action, Getter, namespace} from 'vuex-class';
 import {ProductState} from './store/product/types';
@@ -45,10 +45,10 @@ export default class Payment extends Vue {
     @orderModule.Action('setStripeCheckout') public setStripeCheckout: any;
     @orderModule.Action('setStripeCheckoutType') public setStripeCheckoutType: any;
     @orderModule.Action('setStripeEmail') public setStripeEmail: any;
-    @orderModule.Action('makeOrder') public paymentStripe: any;
-    @productModule.Action('paymentStripe') public getProduct: any;
-    @orderModule.Getter('order') public orderEntity!: OrderEntity;
-    @productModule.Getter('product') public productEntity!: ProductEntity;
+    @orderModule.Action('paymentStripe') public paymentStripe: any;
+    @productModule.Action('getProduct') public getProduct: any;
+    @orderModule.Getter('getOrder') public getOrder!: OrderEntity;
+    @productModule.Getter('getProductState') public getProductState!: ProductEntity;
     constructor() {
       super();
     }
@@ -56,16 +56,52 @@ export default class Payment extends Vue {
     public count: number = 0;
     public status: boolean = false;
     public errorMessage: string= '';
+    public lblInfoStripeBtn: string='lblInfoStripeBtn';
+    public lblInfoStripeTitle: string='Order No:';
+    public activePublicKey: string = '';
+    public ownerPublicKey: string = '';
+    public accountName: string = '';
+    public email: string = '';
+    public orderId: string = '';
+    public stripePublicKey: string = '';
+    public coinbaseCheckout: string = '';
+    public creditCurrency: number = 0;
+    mounted() {
+        this.ownerPublicKey = this.getOrder === undefined? '': this.getOrder.ownerPublicKey;
+        this.activePublicKey = this.getOrder === undefined? '': this.getOrder.activePublicKey;
+        this.accountName = this.getOrder.eosAccountName;
+        this.email = this.getOrder.emailAddress;
+        this.orderId = this.getOrder.orderId;
+        this.stripePublicKey = this.getOrder.stripePublicKey;
+        this.coinbaseCheckout = this.getOrder.coinbaseCheckout;
+        this.creditCurrency = this.product.product.stripeSalePrice;
+    }
 
     created() {
         //this.$store.dispatch('product/getProduct');
         this.getProduct();
-        if (typeof this.orderEntity.stripeCheckout === 'undefined') {
+        if (typeof (<any>window).StripeCheckout === 'undefined') {
             const script = document.createElement('script');
             script.src = 'https://checkout.stripe.com/checkout.js';
             document.getElementsByTagName('head')[0].appendChild(script);
         }
+        
     };
+    // get creditCurrency() {
+    //     return this.getProductState.stripeSalePrice;
+    // }
+    get productId() {
+        return this.getProductState.productId;
+    }
+    get productName() {
+        return this.getProductState.productName;
+    }
+    get cryptoCurrency() {
+        return this.getProductState.coinbaseSalePrice;
+    }
+    get priceCurrency() {
+        return this.getProductState.salePriceCurrency;
+    }
 
     // computed: {
         // ...mapGetters('multiLanguage', ['lang', 'displayInfo']),
@@ -198,9 +234,9 @@ export default class Payment extends Vue {
     // };
     payTypeChange() {
         if (this.selected == '1') {
-            this.count = this.productEntity.stripeSalePrice;
+            this.count = 60
         } else {
-            this.count = this.productEntity.coinbaseSalePrice;
+            this.count = 70;
         }
     }
 
@@ -208,10 +244,10 @@ export default class Payment extends Vue {
         if (this.selected === '1') {
             this.setPaymentType('stripe');
 
-            this.makeOrder().then(returnValue => {
+            this.makeOrder().then((returnValue: any) => {
                 if (returnValue.code === 'OK') {
-                    let $checkout = StripeCheckout.configure({
-                        key: this.orderEntity.stripePublicKey,
+                    let $checkout = (<any>window).StripeCheckout.configure({
+                        key: this.getOrder.stripePublicKey,
                         image: 'https://dapps.smartone.io/marketplace.png',
                         locale: 'auto',
                         zipCode: false,
@@ -225,11 +261,11 @@ export default class Payment extends Vue {
                     setTimeout(() => {
                         // $checkout.close() is also available.
                         $checkout.open({
-                            name: this.productEntity.productName,
+                            name: this.getProductState.productName,
                             description:
-                                this.lblInfoStripeTitle + this.orderEntity.orderId,
-                            amount: this.productEntity.stripeSalePrice * 100,
-                            currency: this.productEntity.salePriceCurrency,
+                                this.lblInfoStripeTitle + this.getOrder.orderId,
+                            amount: this.getProductState.stripeSalePrice * 100,
+                            currency: this.getProductState.salePriceCurrency,
                             email: '',
 
                             token: (token: any) => {
@@ -255,7 +291,7 @@ export default class Payment extends Vue {
                 if (returnValue.code === 'OK') {
                     window.open(
                         'https://commerce.coinbase.com/checkout/' +
-                            this.orderEntity.coinbaseCheckout,
+                            this.getOrder.coinbaseCheckout,
                         '_blank'
                     );
 

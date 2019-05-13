@@ -40,13 +40,14 @@ export default class Finish extends Vue {
     @orderModule.Action('getOrder') public getOrder: any;
     @accountModule.Action('getAccount') public getAccount: any;
     @accountModule.Getter('account') public accountEntity!: AccountEntity;
-    @orderModule.Getter('order') public orderEntity!: OrderEntity;
+    @orderModule.Getter('getOrder') public orderEntity!: OrderEntity;
     @productModule.Getter('product') public productEntity!: ProductEntity;
     constructor() {
       super();
     }
     public success: boolean = false;
     public showJSon: boolean = false;
+    public lblInitInfo: string = 'Connection......';
   // computed: {
   //   ...mapGetters("multiLanguage", ["lang", "displayInfo"]),
 

@@ -45,33 +45,42 @@ export default class CreateAccountName extends Vue {
     @orderModule.Action('setMailVerifyFlg') public setMailVerifyFlg: any;
     @orderModule.Action('setAccountNameExistFlg') public setAccountNameExistFlg: any;
     @productModule.Action('getProduct') public getProduct: any;
-    @orderModule.Getter('order') public orderEntity!: OrderEntity;
-    @productModule.Getter('product') public productEntity!: ProductEntity;
+    @orderModule.Getter('getOrder') public getOrder!: OrderEntity;
+    @productModule.Getter('getProductState') public productEntity!: ProductEntity;
     constructor() {
       super();
     }
 
-    public accountNamePage: string = this.orderEntity === undefined? '': this.orderEntity.eosAccountName;
-    public emailPage: string = this.orderEntity === undefined? '': this.orderEntity.emailAddress;
-    public mailVerifyFlag: string = this.orderEntity === undefined? '': this.orderEntity.mailVerifyFlg;
-    public accountNameExistFlag: string = this.orderEntity === undefined? '': this.orderEntity.accountNameExistFlg;
-    public productName: string = this.productEntity === undefined? '': this.productEntity.productName;
-    public salePriceTime: string = this.productEntity === undefined? '': this.productEntity.salePriceTime;
-    public stripeSalePrice: number = this.productEntity === undefined? 0: this.productEntity.stripeSalePrice;
-    public coinbaseSalePrice: number = this.productEntity === undefined? 0: this.productEntity.coinbaseSalePrice;
-    public verificationCode: string = '';
-    public accountNameErrorMsg: string = '';
-    public emailErrorMsg: string = '';
-    public verificationCodeErrorMsg: string = '';
-    public totalTime: number = 120;
-    public canClick: boolean = true;
-    public contentPattern: string = '1'; // 'Get Verification Code'
-    public lblActNamePhr: string = 'Enter a valid account name';
-    public lblEmailAdrPhr: string = 'Enter a valid email address';
+    private accountNamePage = '';
+    private emailPage = '';
+    private mailVerifyFlag = '';
+    private accountNameExistFlag = '';
+    private productName = '';
+    private salePriceTime = '';
+    private stripeSalePrice = 0 ;
+    private coinbaseSalePrice = 0;
+    private verificationCode: string = '';
+    private accountNameErrorMsg: string = '';
+    private emailErrorMsg: string = '';
+    private verificationCodeErrorMsg: string = '';
+    private totalTime: number = 120;
+    private canClick: boolean = true;
+    private contentPattern: string = '1'; // 'Get Verification Code'
+    private lblActNamePhr: string = 'Enter a valid account name';
+    private lblEmailAdrPhr: string = 'Enter a valid email address';
 
     // mounted
     public mounted() {
       // fetching data as soon as the component's been mounted
+      this.accountNamePage= this.getOrder.eosAccountName;
+      this.emailPage = this.getOrder === undefined? '': this.getOrder.emailAddress;
+      this.mailVerifyFlag = this.getOrder === undefined? '': this.getOrder.mailVerifyFlg;
+      this.accountNameExistFlag = this.getOrder === undefined? '': this.getOrder.accountNameExistFlg;
+      this.productName = this.productEntity === undefined? '': this.productEntity.productName;
+      this.salePriceTime = this.productEntity === undefined? '': this.productEntity.salePriceTime;
+      this.stripeSalePrice = this.productEntity === undefined? 0: this.productEntity.stripeSalePrice;
+      this.coinbaseSalePrice = this.productEntity === undefined? 0: this.productEntity.coinbaseSalePrice;
+
       this.getProduct();
       // console.log(this.$http.get('http://jsonplaceholder.typicode.com/posts'));
     }
@@ -99,7 +108,8 @@ export default class CreateAccountName extends Vue {
         ) {
           return false;
         } else {
-          return true;
+          // return true;
+          return false;
         }
     }
     get content() {
@@ -209,26 +219,27 @@ export default class CreateAccountName extends Vue {
 
     // Next to CreatePublicKey
     public trunToCreatePublickey() {
-        if (this.mailVerifyFlag === '2') {
-          if (this.verificationCode.length <= 0) {
-            this.verificationCodeErrorMsg = 'Please enter the verification code received via the email address specified above.';
-          } else {
-            axios.post('/api/ear/verify-email-address', {
-                email_address: this.emailPage,
-                confirm_code: this.verificationCode,
-                lang: 'en',
-            }).then((response) => {
-                if (response.data.code !== '200') {
-                    this.verificationCodeErrorMsg = response.data.msg;
-                } else {
-                    this.mailVerifyFlag = '1';
-                    this.saveInfo();
-                }
-            }).catch((error) => console.log(error));
-          }
-        } else if (this.mailVerifyFlag === '1') {
-          this.saveInfo();
-        }
+      this.saveInfo();
+        // if (this.mailVerifyFlag === '2') {
+        //   if (this.verificationCode.length <= 0) {
+        //     this.verificationCodeErrorMsg = 'Please enter the verification code received via the email address specified above.';
+        //   } else {
+        //     axios.post('/api/ear/verify-email-address', {
+        //         email_address: this.emailPage,
+        //         confirm_code: this.verificationCode,
+        //         lang: 'en',
+        //     }).then((response) => {
+        //         if (response.data.code !== '200') {
+        //             this.verificationCodeErrorMsg = response.data.msg;
+        //         } else {
+        //             this.mailVerifyFlag = '1';
+        //             this.saveInfo();
+        //         }
+        //     }).catch((error) => console.log(error));
+        //   }
+        // } else if (this.mailVerifyFlag === '1') {
+        //   this.saveInfo();
+        // }
     }
     public saveInfo() {
         this.setEosAccountName(this.accountNamePage);

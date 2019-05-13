@@ -1,4 +1,4 @@
-import WithRender from './CreateAccountName.html';
+import WithRender from './CreatePublicKey.html';
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {State, Action, Getter, namespace} from 'vuex-class';
 import {ProductState} from './store/product/types';
@@ -17,7 +17,7 @@ import Card from '../components/common/Card.vue';
 import CardBody from '../components/common/CardBody.vue';
 const productModule = namespace('product');
 const orderModule = namespace('order');
-// import dataApi from '../api/adapter';
+import dataApi from '../utils/adapter';
 @WithRender
 @Component(
     {
@@ -36,24 +36,32 @@ const orderModule = namespace('order');
 )
 
 export default class CreatePublicKey extends Vue {
+
     @State('product') public product!: ProductState;
     @State('order') public order!: OrderState;
     @orderModule.Action('setOwnerPublicKey') public setOwnerPublicKey: any;
     @orderModule.Action('setActivePublicKey') public setActivePublicKey: any;
-    @orderModule.Getter('order') public orderEntity!: OrderEntity;
-    @productModule.Getter('product') public productEntity!: ProductEntity;
+
+    @orderModule.Getter('getOrder') public getOrder!: OrderEntity;
+    @productModule.Getter('getProductState') public productEntity!: ProductEntity;
     constructor() {
       super();
     }
-    public ownerPublicKeyPage: string = this.orderEntity === undefined? '': this.orderEntity.ownerPublicKey;
-    public activePublicKeyPage: string = this.orderEntity === undefined? '': this.orderEntity.activePublicKey;
+    public ownerPublicKeyPage: string = '';
+    public activePublicKeyPage: string = '';
     public sendKeyToEmaiMessage: string = '';
     public ownerPublicKeyErrorMsg: string = '';
     public activePublicKeyErrorMsg: string = '';
+    public accountName: string = '';
+    public email: string = '';
+    public mounted() {
+        this.ownerPublicKeyPage = this.getOrder === undefined? '': this.getOrder.ownerPublicKey;
+        this.activePublicKeyPage = this.getOrder === undefined? '': this.getOrder.activePublicKey;
+        this.accountName = this.getOrder.eosAccountName;
+        this.email = this.getOrder.emailAddress;
+    }
 
     // computed: {
-
-
     //     // multi-language display process of item within screen.
     //     screenItemInfo: function() {
     //         return this.displayInfo.filter(row => row.function_name === 'cpk');
@@ -167,10 +175,10 @@ export default class CreatePublicKey extends Vue {
     // method ///////////////////////
     sendKeyToEmail() {
         dataApi.sendKeys({
-                email_address: this.email,
-                lang: this.lang
+                email_address: this.getOrder,
+                lang: 'en',
             },
-            responseCode => {
+            (responseCode: any) => {
                 if (responseCode != '200') {
                     this.sendKeyToEmaiMessage =
                         'Send keyPairs Sucessful, Please check your Email!';
@@ -200,9 +208,9 @@ export default class CreatePublicKey extends Vue {
             {
                 owner_public_key: this.ownerPublicKeyPage,
                 active_public_key: this.activePublicKeyPage,
-                lang: this.lang
+                lang: 'en',
             },
-            response => {
+            (response: any) => {
                 var res = response.data;
 
                 if (res.code == '200') {

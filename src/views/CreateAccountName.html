@@ -19,7 +19,7 @@
                     v-model="accountNamePage"
                     pattern="^[1-5a-z]{0,12}"
                     maxlength="12"
-                    v-on:input="accountNamePage=opt(accountNamePage, $event)"
+                    v-on:input="accountNamePage=opt(this.accountNamePage, $event)"
                     v-bind:class="{checkValid:this.accountNameExistFlag=='1', checkInValid:this.accountNameExistFlag=='2'}"
                     v-on:blur="checkAccountName"
                     class="form-control"

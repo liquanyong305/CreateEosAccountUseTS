@@ -7,9 +7,9 @@ import { OrderEntity } from '@/views/entity/order.entity';
 export const actions: ActionTree<OrderState, RootState> = {
     setEosAccountName({ commit }, eosAccountName) {
         commit('setEosAccountName', eosAccountName);
-        commit('account/setAccountName', eosAccountName, {
-            root: true,
-        });
+        // commit('account/setAccountName', eosAccountName, {
+        //     root: true,
+        // });
     },
 
     setEmailAddress({ commit }, emailAddress) {

@@ -12,7 +12,8 @@ export const actions: ActionTree<ProductState, RootState> = {
         axios.post('/api/ear/get-product', {
                 lang: rootState.multiLanguage.lang,
             }).then((response) => {
-                if (response.data.code === '200') {
+                console.log("response get-Product:", response);
+                if (response.data.code == 200) {
                     const payload: ProductEntity = response.data.data;
                     commit('setProduct', payload);
                     commit('order/setProductId', payload.productId, {root: true });
