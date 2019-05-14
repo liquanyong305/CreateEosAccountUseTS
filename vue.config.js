@@ -4,11 +4,11 @@ module.exports = {
   devServer: {
     proxy: {
       '/api/ear': {
-        target: 'https://xxxxx',
+        target: 'https://dev-dapps.smartone.io',
         changeOrigin: true
     },
       '/api/sic/get-multi-language': {
-          target: 'https://xxxxx',
+          target: 'https://dev-dapps.smartone.io',
           changeOrigin: true
       },
     },

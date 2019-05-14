@@ -59,6 +59,7 @@ export default class CreatePublicKey extends Vue {
         this.activePublicKeyPage = this.getOrder === undefined? '': this.getOrder.activePublicKey;
         this.accountName = this.getOrder.eosAccountName;
         this.email = this.getOrder.emailAddress;
+        this.productEntity;
     }
 
     // computed: {

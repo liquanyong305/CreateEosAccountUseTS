@@ -3,12 +3,12 @@ import { ProductState } from './types';
 
 export const mutations: MutationTree<ProductState> = {
     setProduct(state, product) {
-        state.product.productId = product.productId;
-        state.product.productName = product.productName;
-        state.product.salePriceTime = product.salePriceTime;
-        state.product.stripeSalePrice = product.stripeSalePrice;
-        state.product.coinbaseSalePrice = product.coinbaseSalePrice;
-        state.product.salePriceCurrency = product.salePriceCurrency;
+        state.product.productId = product.product_id;
+        state.product.productName = product.product_name;
+        state.product.salePriceTime = product.sale_price_time;
+        state.product.stripeSalePrice = product.stripe_sale_price;
+        state.product.coinbaseSalePrice = product.coinbase_sale_price;
+        state.product.salePriceCurrency = product.sale_price_currency;
     },
     productError(state, errors) {
         // console.log('customer-search.store.handleError');

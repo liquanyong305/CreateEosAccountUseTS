@@ -61,17 +61,17 @@ export const actions: ActionTree<OrderState, RootState> = {
                 payment_type: state.order.paymentType,
                 lang: rootState.multiLanguage.lang,
             }).then((response) => {
-                const payload: OrderEntity = response.data.data;
-                if (response.data.code === '200') {
+                const payload: any = response.data.data;
+                if (response.data.code == '200') {
                     const order = payload;
                     commit('setOrderId', order.orderId);
-                    if (order.stripePublicKey) {
+                    if (order.stripe_public_key) {
                         commit('setStripePublicKey', order.stripePublicKey);
                     }
                     if (order.coinbaseCheckout) {
                         commit('setCoinbaseCheckout', order.coinbaseCheckout);
                     }
-                    // return {code: 'OK', msg:''}
+                    return {code: 'OK', msg:''}
                  } else {
                     commit('orderError', response.data.msg);
                  }

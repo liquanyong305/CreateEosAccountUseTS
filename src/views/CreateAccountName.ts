@@ -44,9 +44,10 @@ export default class CreateAccountName extends Vue {
     @orderModule.Action('setEmailAddress') public setEmailAddress: any;
     @orderModule.Action('setMailVerifyFlg') public setMailVerifyFlg: any;
     @orderModule.Action('setAccountNameExistFlg') public setAccountNameExistFlg: any;
+    @orderModule.Action('setProductId') public setProductId: any;
     @productModule.Action('getProduct') public getProduct: any;
     @orderModule.Getter('getOrder') public getOrder!: OrderEntity;
-    @productModule.Getter('getProductState') public productEntity!: ProductEntity;
+    @productModule.Getter('getProductState') public getProductState!: ProductEntity;
     constructor() {
       super();
     }
@@ -55,10 +56,10 @@ export default class CreateAccountName extends Vue {
     private emailPage = '';
     private mailVerifyFlag = '';
     private accountNameExistFlag = '';
-    private productName = '';
-    private salePriceTime = '';
-    private stripeSalePrice = 0 ;
-    private coinbaseSalePrice = 0;
+    // private productName = '';
+    // private salePriceTime = '';
+    // private stripeSalePrice = 0 ;
+    // private coinbaseSalePrice = 0;
     private verificationCode: string = '';
     private accountNameErrorMsg: string = '';
     private emailErrorMsg: string = '';
@@ -69,21 +70,38 @@ export default class CreateAccountName extends Vue {
     private lblActNamePhr: string = 'Enter a valid account name';
     private lblEmailAdrPhr: string = 'Enter a valid email address';
 
+    public created() {
+      // this.getProduct();
+    }
+
     // mounted
-    public mounted() {
+    async  mounted() {
       // fetching data as soon as the component's been mounted
       this.accountNamePage= this.getOrder.eosAccountName;
       this.emailPage = this.getOrder === undefined? '': this.getOrder.emailAddress;
       this.mailVerifyFlag = this.getOrder === undefined? '': this.getOrder.mailVerifyFlg;
       this.accountNameExistFlag = this.getOrder === undefined? '': this.getOrder.accountNameExistFlg;
-      this.productName = this.productEntity === undefined? '': this.productEntity.productName;
-      this.salePriceTime = this.productEntity === undefined? '': this.productEntity.salePriceTime;
-      this.stripeSalePrice = this.productEntity === undefined? 0: this.productEntity.stripeSalePrice;
-      this.coinbaseSalePrice = this.productEntity === undefined? 0: this.productEntity.coinbaseSalePrice;
-
       this.getProduct();
+      //this.productName = this.productEntity === undefined? '': this.productEntity.productName;
+      // this.salePriceTime = this.productEntity === undefined? '': this.productEntity.salePriceTime;
+      // this.stripeSalePrice = this.productEntity === undefined? 0: this.productEntity.stripeSalePrice;
+      // this.coinbaseSalePrice = this.productEntity === undefined? 0: this.productEntity.coinbaseSalePrice;
       // console.log(this.$http.get('http://jsonplaceholder.typicode.com/posts'));
     }
+
+    get productName() {
+      return this.getProductState.productName;
+    }
+    get salePriceTime() {
+      return this.getProductState.salePriceTime;
+    }
+    get stripeSalePrice() {
+      return this.getProductState.stripeSalePrice;
+    }
+    get coinbaseSalePrice() {
+      return this.getProductState.coinbaseSalePrice;
+    }
+
     // computed ///////////////////////
     get accountNameExistMsg() {
         if (
@@ -242,6 +260,7 @@ export default class CreateAccountName extends Vue {
         // }
     }
     public saveInfo() {
+        this.setProductId(this.getProductState.productId);
         this.setEosAccountName(this.accountNamePage);
         this.setEmailAddress(this.emailPage);
         this.setMailVerifyFlg(this.mailVerifyFlag);

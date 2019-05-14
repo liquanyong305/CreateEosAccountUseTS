@@ -16,7 +16,7 @@ export const actions: ActionTree<ProductState, RootState> = {
                 if (response.data.code == 200) {
                     const payload: ProductEntity = response.data.data;
                     commit('setProduct', payload);
-                    commit('order/setProductId', payload.productId, {root: true });
+                    // commit('order/setProductId', payload.productId, {root: true });
                 } else {
                     commit('productError', response.data.code);
                 }

@@ -36,7 +36,6 @@ const orderModule = namespace('order');
     },
 )
 
-
 export default class Payment extends Vue {
     @State('product') public product!: ProductState;
     @State('order') public order!: OrderState;
@@ -65,7 +64,6 @@ export default class Payment extends Vue {
     public orderId: string = '';
     public stripePublicKey: string = '';
     public coinbaseCheckout: string = '';
-    public creditCurrency: number = 0;
     mounted() {
         this.ownerPublicKey = this.getOrder === undefined? '': this.getOrder.ownerPublicKey;
         this.activePublicKey = this.getOrder === undefined? '': this.getOrder.activePublicKey;
@@ -74,12 +72,10 @@ export default class Payment extends Vue {
         this.orderId = this.getOrder.orderId;
         this.stripePublicKey = this.getOrder.stripePublicKey;
         this.coinbaseCheckout = this.getOrder.coinbaseCheckout;
-        this.creditCurrency = this.product.product.stripeSalePrice;
     }
 
     created() {
-        //this.$store.dispatch('product/getProduct');
-        this.getProduct();
+        //this.getProduct();
         if (typeof (<any>window).StripeCheckout === 'undefined') {
             const script = document.createElement('script');
             script.src = 'https://checkout.stripe.com/checkout.js';
@@ -87,9 +83,9 @@ export default class Payment extends Vue {
         }
         
     };
-    // get creditCurrency() {
-    //     return this.getProductState.stripeSalePrice;
-    // }
+    get creditCurrency() {
+        return this.getProductState.stripeSalePrice;
+    }
     get productId() {
         return this.getProductState.productId;
     }
@@ -234,18 +230,18 @@ export default class Payment extends Vue {
     // };
     payTypeChange() {
         if (this.selected == '1') {
-            this.count = 60
+            this.count = this.getProductState.stripeSalePrice;
         } else {
-            this.count = 70;
+            this.count = this.getProductState.coinbaseSalePrice;
         }
     }
 
     pay() {
         if (this.selected === '1') {
             this.setPaymentType('stripe');
-
+            // 非同期通信 ////////////////////////// ここの実装不正、MUTATIONにより設定した状態により、OKかどうか判断すると想定している。
             this.makeOrder().then((returnValue: any) => {
-                if (returnValue.code === 'OK') {
+                //if (returnValue.code === 'OK') {
                     let $checkout = (<any>window).StripeCheckout.configure({
                         key: this.getOrder.stripePublicKey,
                         image: 'https://dapps.smartone.io/marketplace.png',
@@ -279,9 +275,9 @@ export default class Payment extends Vue {
                             }
                         });
                     }, 100);
-                } else {
-                    this.errorMessage = returnValue.msg;
-                }
+                // } else {
+                //     this.errorMessage = returnValue.msg;
+                // }
             });
         } else {
             // this.selected === '2'
