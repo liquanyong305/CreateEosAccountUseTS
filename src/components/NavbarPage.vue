@@ -2,10 +2,9 @@
   <container>
       <navbar style="background-color:#5385c1" dark position="top" scrolling>
         <!-- Navbar brand -->
-        <mdb-navbar-brand href="https://smartone.io/">
-          <img src="https://dapps.smartone.io/marketplace.png" height="30" alt>
+        <mdb-navbar-brand href="https://xxxxx.io/">
+          <img src="https://xxxx.xxxx.xxxx/xxxx.png" height="30" alt>
         </mdb-navbar-brand>
-        <!-- <mdb-navbar-brand href="#">SmartOne</mdb-navbar-brand> -->
         <navbar-collapse>
           <navbar-nav right>
             <navbar-item href="#" waves-fixed>HOME</navbar-item>

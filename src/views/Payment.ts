@@ -121,113 +121,6 @@ export default class Payment extends Vue {
         //     coinbaseCheckout: 'coinbaseCheckout'
         // }),
 
-        // multi-language display process of item within screen.
-        // screenItemInfo: function() {
-        //     return this.displayInfo.filter(row => row.function_name === 'pay');
-        // },
-
-        // commonScreenItemInfo: function() {
-        //     return this.displayInfo.filter(row => row.function_name === 'comm');
-        // },
-
-        // // ----------------------------------------------multi-language--start-----------------------------------------------------
-        // lblPayPoint: function() {
-        //     return this.screenItemInfo.filter(
-        //         row => row.item_name === 'lblPayPoint'
-        //     )[0].item_value;
-        // },
-
-        // lblPayDescription: function() {
-        //     return this.screenItemInfo.filter(
-        //         row => row.item_name === 'lblPayDescription'
-        //     )[0].item_value;
-        // },
-
-        // lblPayOption: function() {
-        //     return this.screenItemInfo.filter(
-        //         row => row.item_name === 'lblPayOption'
-        //     )[0].item_value;
-        // },
-
-        // lblPayOptionItem1: function() {
-        //     return this.screenItemInfo.filter(
-        //         row => row.item_name === 'lblPayOptionItem1'
-        //     )[0].item_value;
-        // },
-
-        // lblPayOptionItem2: function() {
-        //     return this.screenItemInfo.filter(
-        //         row => row.item_name === 'lblPayOptionItem2'
-        //     )[0].item_value;
-        // },
-
-        // lblPayOptionItem3: function() {
-        //     return this.screenItemInfo.filter(
-        //         row => row.item_name === 'lblPayOptionItem3'
-        //     )[0].item_value;
-        // },
-
-        // lblInfoTotal: function() {
-        //     return this.screenItemInfo.filter(
-        //         row => row.item_name === 'lblInfoTotal'
-        //     )[0].item_value;
-        // },
-
-        // lblInfoStripeBtn: function() {
-        //     return this.screenItemInfo.filter(
-        //         row => row.item_name === 'lblInfoStripeBtn'
-        //     )[0].item_value;
-        // },
-
-        // lblInfoStripeTitle: function() {
-        //     return this.screenItemInfo.filter(
-        //         row => row.item_name === 'lblInfoStripeTitle'
-        //     )[0].item_value;
-        // },
-
-        // lblCommAccountName: function() {
-        //     return this.commonScreenItemInfo.filter(
-        //         row => row.item_name === 'lblCommAccountName'
-        //     )[0].item_value;
-        // },
-
-        // lblCommEmail: function() {
-        //     return this.commonScreenItemInfo.filter(
-        //         row => row.item_name === 'lblCommEmail'
-        //     )[0].item_value;
-        // },
-
-        // lblCommPpkOwner: function() {
-        //     return this.commonScreenItemInfo.filter(
-        //         row => row.item_name === 'lblCommPpkOwner'
-        //     )[0].item_value;
-        // },
-
-        // lblCommPpkActive: function() {
-        //     return this.commonScreenItemInfo.filter(
-        //         row => row.item_name === 'lblCommPpkActive'
-        //     )[0].item_value;
-        // },
-
-        // lblBtnPrevious: function() {
-        //     return this.commonScreenItemInfo.filter(
-        //         row => row.item_name === 'lblBtnPrevious'
-        //     )[0].item_value;
-        // },
-
-        // lblBtnPayWithStripe: function() {
-        //     return this.commonScreenItemInfo.filter(
-        //         row => row.item_name === 'lblBtnPayWithStripe'
-        //     )[0].item_value;
-        // },
-
-        // lblBtnPayWithCoinbase: function() {
-        //     return this.commonScreenItemInfo.filter(
-        //         row => row.item_name === 'lblBtnPayWithCoinbase'
-        //     )[0].item_value;
-        // }
-        // ----------------------------------------------multi-language--end-------------------------------------------------------
-    // };
     payTypeChange() {
         if (this.selected == '1') {
             this.count = this.getProductState.stripeSalePrice;
@@ -236,12 +129,14 @@ export default class Payment extends Vue {
         }
     }
 
-    pay() {
+    async pay() {
         if (this.selected === '1') {
             this.setPaymentType('stripe');
             // 非同期通信 ////////////////////////// ここの実装不正、MUTATIONにより設定した状態により、OKかどうか判断すると想定している。
-            this.makeOrder().then((returnValue: any) => {
-                //if (returnValue.code === 'OK') {
+            // this.makeOrder().then((returnValue: any) => {
+                await this.makeOrder();
+
+                if (this.getOrder.orderId != '') {
                     let $checkout = (<any>window).StripeCheckout.configure({
                         key: this.getOrder.stripePublicKey,
                         image: 'https://dapps.smartone.io/marketplace.png',
@@ -275,16 +170,17 @@ export default class Payment extends Vue {
                             }
                         });
                     }, 100);
-                // } else {
-                //     this.errorMessage = returnValue.msg;
-                // }
-            });
+                } else {
+                    this.errorMessage = this.order.errors;
+                }
+            // });
         } else {
             // this.selected === '2'
             this.setPaymentType('coinbase');
 
-            this.makeOrder().then((returnValue: any) => {
-                if (returnValue.code === 'OK') {
+            // this.makeOrder().then((returnValue: any) => {
+                await this.makeOrder();
+                if (this.getOrder.orderId != '') {
                     window.open(
                         'https://commerce.coinbase.com/checkout/' +
                             this.getOrder.coinbaseCheckout,
@@ -293,9 +189,9 @@ export default class Payment extends Vue {
 
                     this.paymentSuccess();
                 } else {
-                    this.errorMessage = returnValue.msg;
+                    this.errorMessage = this.order.errors;
                 }
-            });
+            // });
         }
     }
 

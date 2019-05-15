@@ -3,7 +3,7 @@
     <div class="inner">
       <div class="flex">
         <div class="copyright">
-          Copyright&copy; 2019 <a href="https://smartone.io">SmartOne.io</a>
+          Copyright&copy; 2019 <a href="https://xxxxx.io">xxxxx.xx</a>
         </div>
         <ul class="icons">
           <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>

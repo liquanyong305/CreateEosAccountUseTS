@@ -1,4 +1,4 @@
-import WithRender from './CreateAccountName.html';
+import WithRender from './Finish.html';
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {State, Action, Getter, namespace} from 'vuex-class';
 import {ProductState} from './store/product/types';
@@ -14,7 +14,6 @@ import MyFooter from "../components/MyFooter.vue";
 import Container from "../components/common/Container.vue";
 import Jumbotron from "../components/common/Jumbotron.vue";
 import AppSuccess from "../components/AppSuccess.vue";
-import { account } from './store/account';
 
 const accountModule = namespace('account');
 const productModule = namespace('product');
@@ -29,7 +28,8 @@ const orderModule = namespace('order');
           CheckStep,
           Container,
           MyFooter,
-          AppSuccess
+          AppSuccess,
+          Jumbotron
         },
     },
 )
@@ -41,13 +41,36 @@ export default class Finish extends Vue {
     @accountModule.Action('getAccount') public getAccount: any;
     @accountModule.Getter('account') public accountEntity!: AccountEntity;
     @orderModule.Getter('getOrder') public orderEntity!: OrderEntity;
-    @productModule.Getter('product') public productEntity!: ProductEntity;
+    @productModule.Getter('getProductState') public productEntity!: ProductEntity;
     constructor() {
       super();
     }
     public success: boolean = false;
     public showJSon: boolean = false;
     public lblInitInfo: string = 'Connection......';
+    public activePublicKey: string = '';
+    public ownerPublicKey: string = '';
+    public eosAccountName: string = '';
+    public email: string = '';
+    mounted() {
+      window.setTimeout(() => this.getOrder(), 3000);
+      this.ownerPublicKey = this.orderEntity === undefined? '': this.orderEntity.ownerPublicKey;
+      this.activePublicKey = this.orderEntity === undefined? '': this.orderEntity.activePublicKey;
+      this.eosAccountName = this.orderEntity.eosAccountName;
+      this.email = this.orderEntity.emailAddress;
+    }
+    get orderId() {
+      return this.getOrder.orderId;
+    }
+    get orderStatus() {
+      return this.getOrder.orderStatus;
+    }
+    get orderStatusLabel() {
+      return this.getOrder.orderStatusLabel;
+    }
+    get lblJSonInfo() {
+      return this.showJSon ? "Hide JSON" : "Show JSON";
+    }
   // computed: {
   //   ...mapGetters("multiLanguage", ["lang", "displayInfo"]),
 
@@ -76,74 +99,42 @@ export default class Finish extends Vue {
   //     "netLimitMax",
   //     "jsonInfo"
   //   ]),
-
-  //   lblJSonInfo: function() {
-  //     return this.showJSon ? "Hide JSON" : "Show JSON";
-  //   },
-
-  //   // multi-language display process of item within screen.
-  //   screenItemInfo: function() {
-  //     return this.displayInfo.filter(row => row.function_name === "fin");
-  //   },
-
-  //   commonScreenItemInfo: function() {
-  //     return this.displayInfo.filter(row => row.function_name === "comm");
-  //   },
-
-  //   // ----------------------------------------------multi-language--start-----------------------------------------------------
-  //   lblInitInfo: function() {
-  //     return this.screenItemInfo.filter(
-  //       row => row.item_name === "lblInitInfo"
-  //     )[0].item_value;
-  //   },
-
-  //   lblFinCongratulation: function() {
-  //     return this.screenItemInfo.filter(
-  //       row => row.item_name === "lblFinCongratulation"
-  //     )[0].item_value;
-  //   },
-
-  //   lblBtnRefresh: function() {
-  //     return this.screenItemInfo.filter(
-  //       row => row.item_name === "lblBtnRefresh"
-  //     )[0].item_value;
-  //   },
-
-  //   lblBtnAccountInfo: function() {
-  //     return this.screenItemInfo.filter(
-  //       row => row.item_name === "lblBtnAccountInfo"
-  //     )[0].item_value;
-  //   },
-
-  //   lblCommAccountName: function() {
-  //     return this.commonScreenItemInfo.filter(
-  //       row => row.item_name === "lblCommAccountName"
-  //     )[0].item_value;
-  //   },
-
-  //   lblCommEmail: function() {
-  //     return this.commonScreenItemInfo.filter(
-  //       row => row.item_name === "lblCommEmail"
-  //     )[0].item_value;
-  //   },
-
-  //   lblCommPpkOwner: function() {
-  //     return this.commonScreenItemInfo.filter(
-  //       row => row.item_name === "lblCommPpkOwner"
-  //     )[0].item_value;
-  //   },
-
-  //   lblCommPpkActive: function() {
-  //     return this.commonScreenItemInfo.filter(
-  //       row => row.item_name === "lblCommPpkActive"
-  //     )[0].item_value;
-  //   },
-
-  //   orderStatusMsg: function() {
-  //     return this.orderStatusLabel ? this.orderStatusLabel : this.lblInitInfo;
-  //   }
-  //   // ----------------------------------------------multi-language--end-------------------------------------------------------
-  // },
+    get accountName() {
+      return this.accountEntity.accountName;
+    }
+    get createdw() {
+      return this.accountEntity.created;
+    }
+    get coreLiquidBalance() {
+      return this.accountEntity.coreLiquidBalance;
+    }
+    get ramQuota() {
+      return this.accountEntity.ramQuota;
+    }
+    get ramUsage() {
+      return this.accountEntity.ramUsage;
+    }
+    get cpuWeight() {
+      return this.accountEntity.cpuWeight;
+    }
+    get cpuLimitUsed() {
+      return this.accountEntity.cpuLimitUsed;
+    }
+    get cpuLimitMax() {
+      return this.accountEntity.cpuLimitMax;
+    }
+    get netWeight() {
+      return this.accountEntity.netWeight;
+    }
+    get netLimitUsed() {
+      return this.accountEntity.netLimitUsed;
+    }
+    get netLimitMax() {
+      return this.accountEntity.netLimitMax;
+    }
+    get jsonInfo() {
+      return this.accountEntity.jsonInfo;
+    }
   get  orderStatusMsg() {
       return this.orderEntity.orderStatusLabel ? this.orderEntity.orderStatusLabel : this.lblInitInfo;
   };
@@ -151,19 +142,8 @@ export default class Finish extends Vue {
   jsonClick() {
     this.showJSon = !this.showJSon;
   };
-  // methods: {
-  //   ...mapActions("order", {
-  //     getOrderStatus: "getOrder"
-  //   }),
-
-  //   ...mapActions("account", ["getAccount"]),
-
-  //   jsonClick() {
-  //     this.showJSon = !this.showJSon;
-  //   }
-  // },
-
-  mounted() {
-    window.setTimeout(() => this.getOrder(), 3000);
+  getOrderStatus() {
+    this.getOrder();
   }
+
 };

@@ -44,15 +44,17 @@ export const actions: ActionTree<OrderState, RootState> = {
         commit('setStripeEmail', stripeEmail);
     },
 
-    makeOrder({ state, commit, rootState }) {
-        let url;
+    makeOrder({ state, commit, rootState }){
+        let url: string;
         if (state.order.paymentType === 'stripe') {
             url = '/api/ear/init-payment-stripe';
         } else {
             // options.payment_type === 'coinbase'
             url = '/api/ear/init-payment-coinbase';
         }
-        axios.post(url, {
+
+        return new Promise((resolve, reject) => {
+            axios.post(url, {
                 eos_account_name: state.order.eosAccountName,
                 email_address: state.order.emailAddress,
                 owner_public_key: state.order.ownerPublicKey,
@@ -64,20 +66,23 @@ export const actions: ActionTree<OrderState, RootState> = {
                 const payload: any = response.data.data;
                 if (response.data.code == '200') {
                     const order = payload;
-                    commit('setOrderId', order.orderId);
+                    commit('setOrderId', order.order_id);
                     if (order.stripe_public_key) {
-                        commit('setStripePublicKey', order.stripePublicKey);
+                        commit('setStripePublicKey', order.stripe_public_key);
                     }
-                    if (order.coinbaseCheckout) {
-                        commit('setCoinbaseCheckout', order.coinbaseCheckout);
+                    if (order.coinbase_checkout) {
+                        commit('setCoinbaseCheckout', order.coinbase_checkout);
                     }
-                    return {code: 'OK', msg:''}
+                    resolve({
+                        code: 'OK'
+                    });
                  } else {
                     commit('orderError', response.data.msg);
                  }
             }, (error) => {
                 commit('orderError', error);
             });
+        });
     },
 
    async getOrder({
@@ -85,6 +90,7 @@ export const actions: ActionTree<OrderState, RootState> = {
         commit,
         rootState,
     }) {
+        return new Promise((resolve, reject) => {
         axios.post('/api/ear/get-order', {
                 order_id: state.order.orderId,
                 lang: rootState.multiLanguage.lang,
@@ -93,13 +99,16 @@ export const actions: ActionTree<OrderState, RootState> = {
                     const payload: OrderEntity = response.data.data;
                     commit('setOrderStatus', payload.orderStatus);
                     commit('setOrderStatusLabel', payload.orderStatusLabel);
-                    // return 'OK';
+                    resolve({
+                        code: 'OK'
+                    });
                 } else {
                     commit('orderError', response.status);
                 }
             }, (error) => {
                 commit('orderError', error);
             });
+        });
     },
 
     paymentStripe({

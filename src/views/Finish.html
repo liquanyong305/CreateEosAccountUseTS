@@ -1,6 +1,6 @@
-<template>
+
   <div>
-    <my-header></my-header>
+    <NavbarPage></NavbarPage>
     <check-step v-bind:step="4"></check-step>
     <main>
       <container>
@@ -28,7 +28,7 @@
             <li>
               <h5>
                 Your chosen EOS Account Name is:
-                <font color="5385c1">{{accountName}}</font>
+                <font color="5385c1">{{eosAccountName}}</font>
               </h5>
             </li>
             <li>
@@ -150,4 +150,3 @@
     <br>
     <my-footer></my-footer>
   </div>
-</template>
